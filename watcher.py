@@ -60,8 +60,11 @@ def main(name: str) -> None:
         print(f"[{name}] 자리 감시 시작 (새로고침 {cfg['refresh_sec']}초 간격). Ctrl+C 로 중단.")
 
         def check() -> bool:
-            page.reload()
-            page.wait_for_load_state("networkidle")
+            # 날짜/옵션 선택 상태가 새로고침으로 초기화되는 페이지(야놀자 등)는
+            # config 에서 "reload": false 로 두고 화면 갱신만 감시한다.
+            if cfg.get("reload", True):
+                page.reload()
+                page.wait_for_load_state("networkidle")
             return is_available(page, cfg)
 
         found = poll(check, interval=cfg["refresh_sec"])

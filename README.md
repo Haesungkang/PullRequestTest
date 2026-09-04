@@ -32,6 +32,7 @@ cp config.example.json config.json
 | --- | --- |
 | `url` | 감시할 예약 페이지 주소. **실제로 예매/예약 버튼이 보이는 페이지**를 넣으세요. |
 | `needs_login` | true 면 시작 후 직접 로그인할 시간을 줍니다. |
+| `reload` | 감시할 때 페이지를 새로고침할지 여부. 날짜/옵션을 미리 골라둬야 하는 페이지(야놀자 등)는 `false` 로 두세요. |
 | `refresh_sec` | 새로고침 간격(초). 3 이상 권장. |
 | `available_selector` | "자리 있음"을 나타내는 버튼/문구. Playwright 셀렉터 문법. |
 | `sold_out_text` | 이 문구가 보이면 아직 자리 없음으로 판단(예: `매진`, `마감`). |
@@ -40,7 +41,8 @@ cp config.example.json config.json
 
 ```bash
 python watcher.py cgv        # CGV 감시
-python watcher.py hwadamsup  # 화담숲 감시
+python watcher.py hwadamsup  # 화담숲 공식 사이트 감시
+python watcher.py yanolja    # 야놀자 레저 상품 감시
 ```
 
 실행하면:
@@ -60,6 +62,21 @@ python watcher.py hwadamsup  # 화담숲 감시
 4. 자리가 없을 때 뜨는 "매진/마감" 문구를 `sold_out_text` 에 넣습니다.
 
 > 참고: CGV 예매는 영화 → 극장 → 날짜 → 시간 → 좌석 순의 여러 단계라, `url` 에 **원하는 상영시간표 페이지**를 넣고 감시하는 게 가장 정확합니다. 화담숲은 원하는 날짜의 예약 페이지 URL 을 넣으세요.
+
+## 야놀자(leisure-web.yanolja.com) 설정하기
+
+`config.example.json` 의 `yanolja` 항목은 상품 페이지 URL만 채워져 있고, **셀렉터는 실제 페이지에서 확인하지 않은 임시값**입니다. 처음 쓰기 전에 아래대로 한 번 맞춰주세요.
+
+1. 크롬에서 상품 페이지를 엽니다.
+2. 원하는 **날짜와 옵션(인원 등)을 먼저 선택**합니다.
+3. F12 → 화살표 아이콘(요소 선택) → 예약/구매 버튼 클릭.
+4. 하이라이트된 태그에서 버튼에 적힌 글자를 그대로 `available_selector` 에 `text=글자` 형태로 넣습니다.
+   - 글자가 자주 바뀌면 `class` 나 `data-*` 속성으로 잡는 편이 안정적입니다.
+5. 자리가 없을 때 뜨는 문구(`마감`, `품절`, `예약 대기` 등)를 `sold_out_text` 에 넣습니다.
+
+### 주의: 야놀자는 `reload` 를 `false` 로
+
+야놀자 상품 페이지는 날짜·옵션을 고른 상태가 화면에 유지되는 방식이라, 매번 새로고침하면 **골라둔 날짜가 초기화**됩니다. 그래서 `yanolja` 항목은 `"reload": false` 로 두었습니다. 이 경우 스크립트는 새로고침 없이 화면 변화만 감시하므로, 페이지가 스스로 재고를 갱신하지 않는다면 감지가 늦을 수 있습니다. 그럴 때는 `"reload": true` 로 바꾸고, 로그인 대기 단계에서 날짜까지 고른 뒤 진행하세요.
 
 ## 파일 구성
 
