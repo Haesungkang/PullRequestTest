@@ -1,0 +1,16 @@
+{
+  "cgv": {
+    "url": "http://www.cgv.co.kr/ticket/",
+    "needs_login": true,
+    "refresh_sec": 3,
+    "available_selector": "text=예매하기",
+    "sold_out_text": "매진"
+  },
+  "hwadamsup": {
+    "url": "https://www.hwadamsup.com/",
+    "needs_login": true,
+    "refresh_sec": 3,
+    "available_selector": "text=예약하기",
+    "sold_out_text": "마감"
+  }
+}

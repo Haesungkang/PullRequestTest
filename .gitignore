@@ -1,0 +1,5 @@
+# 개인 예약 대상 정보가 담기므로 config.json 은 올리지 않는다
+config.json
+__pycache__/
+*.pyc
+.venv/
