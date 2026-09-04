@@ -3,6 +3,7 @@
 사용법:
     python watcher.py cgv
     python watcher.py hwadamsup
+    python watcher.py yanolja
 
 동작 순서:
  1) 브라우저를 띄우고 config 에 지정한 예약 페이지를 연다
@@ -85,5 +86,5 @@ def main(name: str) -> None:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        sys.exit("사용법: python watcher.py <cgv|hwadamsup>")
+        sys.exit("사용법: python watcher.py <config.json 에 정의한 이름>")
     main(sys.argv[1])
